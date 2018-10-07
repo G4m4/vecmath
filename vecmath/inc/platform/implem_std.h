@@ -22,7 +22,8 @@
 #ifndef VECMATH_INC_PLATFORM_IMPLEM_STD_H_
 #define VECMATH_INC_PLATFORM_IMPLEM_STD_H_
 
-#include <math.h>
+#include <cmath>
+#include <cstring>
 
 #include "vecmath/inc/common.h"
 
