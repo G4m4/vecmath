@@ -56,13 +56,16 @@
   #if (defined(__i386__))
     #define _ARCH_X86 1
   #endif
+  #if (defined(__x86_64__))
+    #define _ARCH_X64 1
+  #endif
 #endif
 
 /// @brief SIMD enabling, based on platform
 #if defined(_DISABLE_SIMD)
   #define _USE_SSE 0
 #else
-  #if (_ARCH_X86) || (_M_X64)
+  #if (_ARCH_X86) || (_ARCH_X64)
     #define _USE_SSE 1
   #endif
 #endif
