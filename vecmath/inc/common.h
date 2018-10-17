@@ -58,21 +58,21 @@ static inline void ASSUME(const bool condition) { if (!(condition)) __builtin_un
 #endif
 
 /// @brief Indicates that the decorated reference is not aliased
-#ifndef RESTRICT
+#ifndef VECMATH_RESTRICT
 #if(_COMPILER_MSVC)
-#define RESTRICT __restrict
+#define VECMATH_RESTRICT __restrict
 #elif(_COMPILER_GCC)
-#define RESTRICT __restrict__
+#define VECMATH_RESTRICT __restrict__
 #else
-#define RESTRICT
+#define VECMATH_RESTRICT
 #endif  // _COMPILER_ ?
-#endif  // RESTRICT ?
+#endif  // VECMATH_RESTRICT ?
 
 /// @brief Type for block input parameter
-typedef const float* RESTRICT const BlockIn;
+typedef const float* VECMATH_RESTRICT const BlockIn;
 
 /// @brief Type for block output parameter
-typedef float* RESTRICT const BlockOut;
+typedef float* VECMATH_RESTRICT const BlockOut;
 
 }  // namespace vecmath
 

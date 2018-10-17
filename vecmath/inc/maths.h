@@ -24,17 +24,17 @@
 
 #include "vecmath/inc/common.h"
 
-#if _USE_SSE
+#if _VEC_USE_SSE
 #include "vecmath/inc/platform/implem_sse2.h"
 namespace vecmath {
 typedef SSE2VectorMath PlatformVectorMath;
 }
-#else  // _USE_SSE
+#else  // _VEC_USE_SSE
 #include "vecmath/inc/platform/implem_std.h"
 namespace vecmath {
 typedef StandardVectorMath PlatformVectorMath;
 }
-#endif  // _USE_SSE
+#endif  // _VEC_USE_SSE
 
 namespace vecmath {
 
