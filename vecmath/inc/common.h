@@ -26,13 +26,13 @@
 
 #include "vecmath/inc/configuration.h"
 
-#if (_USE_SSE)
+#if (_VEC_VEC_USESSE)
 extern "C" {
   // @todo(gm) move that include
   #include <emmintrin.h>
   #include <mmintrin.h>
 }
-#endif  // (_USE_SSE)
+#endif  // (_VEC_VEC_USESSE)
 
 namespace vecmath {
 
@@ -41,13 +41,13 @@ template<typename Type> void IGNORE(const Type&) {}
 
 /// @brief Assume that the following condition is always true
 /// (on some compilers, allows optimization)
-#if(_COMPILER_MSVC)
+#if(_VEC_COMPILER_MSVC)
 static inline void ASSUME(const bool condition) { __assume(condition); }
-#elif(_COMPILER_GCC)
+#elif(_VEC_COMPILER_GCC)
 static inline void ASSUME(const bool condition) { if (!(condition)) __builtin_unreachable(); }
 #else
 #define ASSUME(_condition_)
-#endif  // _COMPILER_ ?
+#endif  // _VEC_COMPILER_ ?
 
 /// @brief Asserts condition == true
 #if(_BUILD_CONFIGURATION_DEBUG)

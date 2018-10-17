@@ -26,7 +26,7 @@
 
 #include "vecmath/inc/common.h"
 
-#if _USE_SSE
+#if _VEC_USE_SSE
 
 extern "C" {
 #include <emmintrin.h>
@@ -237,16 +237,16 @@ struct SSE2VectorMath {
 
   /// @brief Return each max element of both inputs
   static inline FloatVec Max(FloatVecRead left, FloatVecRead right) {
-#if (_USE_SSE)
+#if (_VEC_USE_SSE)
     return _mm_max_ps(left, right);
 #else
     return std::max(left, right);
-#endif  // (_USE_SSE)
+#endif  // (_VEC_USE_SSE)
   }
 
   /// @brief Round each FloatVec element to the nearest integer
   static inline FloatVec Round(FloatVecRead input) {
-#if (_USE_SSE)
+#if (_VEC_USE_SSE)
     const FloatVec kZero(_mm_setzero_ps());
     const FloatVec kPlus(Fill(0.5f));
     const FloatVec kMinus(Fill(-0.5f));
@@ -256,7 +256,7 @@ struct SSE2VectorMath {
     return Add(kAddMask, input);
 #else
     return (input > 0.0f) ? (input + 0.5f) : (input - 0.5f);
-#endif  // (_USE_SSE)
+#endif  // (_VEC_USE_SSE)
   }
 
   /// @brief Helper function: increment the input and wraps it into [-1.0 ; 1.0[
@@ -266,7 +266,7 @@ struct SSE2VectorMath {
   /// @return the incremented output in [-1.0 ; 1.0[
   static inline FloatVec IncrementAndWrap(FloatVecRead input, FloatVecRead increment) {
     // TODO(gm): check if a common code path can be found
-#if (_USE_SSE)
+#if (_VEC_USE_SSE)
     const FloatVec output(Add(input, increment));
     const FloatVec constant(Fill(-2.0f));
     const FloatVec threshold(Fill(1.0f));
@@ -280,7 +280,7 @@ struct SSE2VectorMath {
       output = Add(output, constant);
     }
     return output;
-#endif  // (_USE_SSE)
+#endif  // (_VEC_USE_SSE)
   }
 
   /// @brief Helper binary function: return true if all input elements are true
@@ -363,6 +363,6 @@ struct SSE2VectorMath {
 
 }  // namespace vecmath
 
-#endif  // _USE_SSE
+#endif  // _VEC_USE_SSE
 
 #endif  // VECMATH_SRC_PLATFORM_IMPLEM_SSE2_H_

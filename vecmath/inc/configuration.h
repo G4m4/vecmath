@@ -28,9 +28,9 @@
 
 /// @brief Compiler detection
 #if(defined(__GNUC__))
-  #define _COMPILER_GCC 1
+  #define _VEC_COMPILER_GCC 1
 #elif(defined(_MSC_VER))
-  #define _COMPILER_MSVC 1
+  #define _VEC_COMPILER_MSVC 1
 #else
   #error "Compiler could not be detected"
 #endif
@@ -45,28 +45,28 @@
 #endif  // defined(NDEBUG) ?
 
 /// @brief Architecture detection - compiler specific preprocessor macros
-#if _COMPILER_MSVC
+#if _VEC_COMPILER_MSVC
   #if defined(_M_IX86)
-    #define _ARCH_X86 1
+    #define _VEC_ARCHX86 1
   #endif
   #if defined(_M_X64)
-    #define _ARCH_X64 1
+    #define _VEC_ARCHX64 1
   #endif
-#elif _COMPILER_GCC
+#elif _VEC_COMPILER_GCC
   #if (defined(__i386__))
-    #define _ARCH_X86 1
+    #define _VEC_ARCHX86 1
   #endif
   #if (defined(__x86_64__))
-    #define _ARCH_X64 1
+    #define _VEC_ARCHX64 1
   #endif
 #endif
 
 /// @brief SIMD enabling, based on platform
 #if defined(_DISABLE_SIMD)
-  #define _USE_SSE 0
+  #define _VEC_USE_SSE 0
 #else
-  #if (_ARCH_X86) || (_ARCH_X64)
-    #define _USE_SSE 1
+  #if (_VEC_ARCHX86) || (_VEC_ARCHX64)
+    #define _VEC_USE_SSE 1
   #endif
 #endif
 
