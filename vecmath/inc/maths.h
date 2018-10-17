@@ -40,18 +40,19 @@ namespace vecmath {
 
 /// @brief Vector maths function not requiring a direct access to samples
 struct CommonVectorMath {
-  /// @brief "Sample" type size in bytes
-  static constexpr unsigned int SampleSizeBytes = sizeof(vecmath::PlatformVectorMath::Sample);
-  /// @brief "Sample" type size compared to audio samples
-  static constexpr unsigned int SampleSize = sizeof(vecmath::PlatformVectorMath::Sample) / sizeof(float);
+  /// @brief "FloatVec" type size in bytes
+  static constexpr unsigned int FloatVecSizeBytes = sizeof(vecmath::PlatformVectorMath::FloatVec);
+  /// @brief "FloatVec" type size compared to audio samples
+  static constexpr unsigned int FloatVecSize = sizeof(vecmath::PlatformVectorMath::FloatVec) / sizeof(float);
 
-  typedef PlatformVectorMath::Sample Sample;
+  typedef PlatformVectorMath::FloatVec FloatVec;
+  typedef PlatformVectorMath::FloatVec FloatVecRead;
 
-  /// @brief Fill a whole Sample with the given (scalar) generator
+  /// @brief Fill a whole FloatVec with the given (scalar) generator
   ///
-  /// @param[in]  generator   Generator to fill the Sample with
+  /// @param[in]  generator   Generator to fill the FloatVec with
   template <typename TypeGenerator>
-  static inline Sample FillWithFloatGenerator(TypeGenerator& generator) {
+  static inline FloatVec FillWithFloatGenerator(TypeGenerator& generator) {
     const float a(generator());
     const float b(generator());
     const float c(generator());
@@ -59,107 +60,107 @@ struct CommonVectorMath {
     return PlatformVectorMath::Fill(a, b, c, d);
   }
 
-  /// @brief Fill a whole Sample with incremental values as follows:
+  /// @brief Fill a whole FloatVec with incremental values as follows:
   ///
   /// First value:  base
   /// ...
-  /// Last value:  base + SampleSize * increment
+  /// Last value:  base + FloatVecSize * increment
   ///
-  /// @param[in]  base    Base value to fill the first element of the Sample with
-  /// @param[in]  increment    Value to add at each Sample element
-  static inline Sample FillIncremental(const float base,
-                                       const float increment) {
+  /// @param[in]  base    Base value to fill the first element of the FloatVec with
+  /// @param[in]  increment    Value to add at each FloatVec element
+  static inline FloatVec FillIncremental(const float base,
+                                         const float increment) {
     return PlatformVectorMath::Fill(base,
                                     base + increment,
                                     base + increment * 2.0f,
                                     base + increment * 3.0f);
   }
 
-  /// @brief Fill a whole Sample based on its length
+  /// @brief Fill a whole FloatVec based on its length
   ///
-  /// The actual value is SampleSize * given value
+  /// The actual value is FloatVecSize * given value
   ///
   /// @param[in]  base    Base value to be filled with
-  static inline Sample FillOnLength(const float base) {
-    return PlatformVectorMath::Fill(base * vecmath::SampleSize);
+  static inline FloatVec FillOnLength(const float base) {
+    return PlatformVectorMath::Fill(base * FloatVecSize);
   }
 
-  /// @brief Extract first element from a Sample
+  /// @brief Extract first element from a FloatVec
   ///
-  /// @param[in]  input   Sample to be read
-  static inline float GetFirst(SampleRead input) {
+  /// @param[in]  input   FloatVec to be read
+  static inline float GetFirst(FloatVecRead input) {
     return PlatformVectorMath::GetByIndex<0>(input);
   }
 
-  /// @brief Extract last element from a Sample
+  /// @brief Extract last element from a FloatVec
   ///
-  /// @param[in]  input   Sample to be read
-  static inline float GetLast(SampleRead input) {
+  /// @param[in]  input   FloatVec to be read
+  static inline float GetLast(FloatVecRead input) {
     return PlatformVectorMath::GetByIndex<3>(input);
   }
 
   /// @brief Helper function: limit input into [min ; max]
-  static inline Sample Clamp(SampleRead input,
-                             const SampleRead min,
-                             const SampleRead max) {
+  static inline FloatVec Clamp(FloatVecRead input,
+                               const FloatVecRead min,
+                               const FloatVecRead max) {
     return PlatformVectorMath::Min(PlatformVectorMath::Max(input, min), max);
   }
 
-  /// @brief Multiply a Sample by a scalar constant
+  /// @brief Multiply a FloatVec by a scalar constant
   ///
-  /// @param[in]  constant   Scalar constant to multiply the Sample by
-  /// @param[in]  input   Sample to be multiplied
-  static inline Sample MulConst(const float constant, SampleRead input) {
+  /// @param[in]  constant   Scalar constant to multiply the FloatVec by
+  /// @param[in]  input   FloatVec to be multiplied
+  static inline FloatVec MulConst(const float constant, FloatVecRead input) {
     return PlatformVectorMath::Mul(PlatformVectorMath::Fill(constant), input);
   }
 
-  /// @brief Normalize the input based on actual Sample length
+  /// @brief Normalize the input based on actual FloatVec length
   ///
   /// @param[in]  input    Value to be normalized
-  static inline Sample Normalize(SampleRead input) {
+  static inline FloatVec Normalize(FloatVecRead input) {
     // Note: division deliberately avoided
     return MulConst(0.25f, input);
   }
 
-  /// @brief Return the absolute value of each element of the Sample
-  static inline Sample Abs(SampleRead input) {
+  /// @brief Return the absolute value of each element of the FloatVec
+  static inline FloatVec Abs(FloatVecRead input) {
     return PlatformVectorMath::Max(
       PlatformVectorMath::Sub(PlatformVectorMath::Fill(0.0f), input),
       input);
   }
 
-  static inline bool Equal(SampleRead threshold, SampleRead input) {
-    const Sample test_result(PlatformVectorMath::Equal(threshold, input));
+  static inline bool Equal(FloatVecRead threshold, FloatVecRead input) {
+    const FloatVec test_result(PlatformVectorMath::Equal(threshold, input));
     return PlatformVectorMath::IsMaskFull(test_result);
   }
 
-  static inline bool Equal(float threshold, SampleRead input) {
+  static inline bool Equal(float threshold, FloatVecRead input) {
     return Equal(PlatformVectorMath::Fill(threshold), input);
   }
 
   /// @brief Helper binary function:
   /// true if both input are closer than the given threshold
   ///
-  /// @param[in]  left   First Sample
-  /// @param[in]  right   Second Sample
+  /// @param[in]  left   First FloatVec
+  /// @param[in]  right   Second FloatVec
   /// @param[in]  threshold   Threshold below which samples are considered close
-  static inline bool IsNear(SampleRead left,
-                            SampleRead right,
+  static inline bool IsNear(FloatVecRead left,
+                            FloatVecRead right,
                             const float threshold) {
-    const Sample abs_diff(Abs(PlatformVectorMath::Sub(left, right)));
+    const FloatVec abs_diff(Abs(PlatformVectorMath::Sub(left, right)));
     return PlatformVectorMath::GreaterEqual(threshold, abs_diff);
   }
 
   /// @brief Helper binary function:
   /// true if any input elements are closer than the given threshold
   ///
-  /// @param[in]  left   First Sample
-  /// @param[in]  right   Second Sample
+  /// @param[in]  left   First FloatVec
+  /// @param[in]  right   Second FloatVec
   /// @param[in]  threshold   Threshold below which samples are considered close
-  static inline bool IsAnyNear(SampleRead left,
-                               SampleRead right,
+  static inline bool IsAnyNear(FloatVecRead left,
+                               FloatVecRead right,
                                const float threshold) {
-    const Sample abs_diff(Abs(PlatformVectorMath::Sub(left, right)));
+    const FloatVec abs_diff(Abs(PlatformVectorMath::Sub(left, right)));
     return PlatformVectorMath::GreaterEqualAny(threshold, abs_diff);
   }
 };
