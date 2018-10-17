@@ -38,8 +38,8 @@
 using vecmath::StandardVectorMath;
 using vecmath::SSE2VectorMath;
 
-typedef vecmath::StandardVectorMath::Sample StdSample;
-typedef vecmath::SSE2VectorMath::Sample SSE2Sample;
+typedef vecmath::StandardVectorMath::FloatVec StdFloatVec;
+typedef vecmath::SSE2VectorMath::FloatVec SSE2FloatVec;
 
 // Common base random distributions
 static std::uniform_real_distribution<float> kNormDistribution(-1.0f, 1.0f);
@@ -49,14 +49,14 @@ static std::bernoulli_distribution kBoolDistribution;
 static std::default_random_engine kRandomGenerator;
 
 // For tests only
-void EXPECT_EQ_SAMPLES(const StdSample & lhs, const SSE2Sample & rhs) {
+void EXPECT_EQ_SAMPLES(const StdFloatVec & lhs, const SSE2FloatVec & rhs) {
   EXPECT_EQ(vecmath::StandardVectorMath::GetByIndex<0>(lhs), vecmath::SSE2VectorMath::GetByIndex<0>(rhs));
   EXPECT_EQ(vecmath::StandardVectorMath::GetByIndex<1>(lhs), vecmath::SSE2VectorMath::GetByIndex<1>(rhs));
   EXPECT_EQ(vecmath::StandardVectorMath::GetByIndex<2>(lhs), vecmath::SSE2VectorMath::GetByIndex<2>(rhs));
   EXPECT_EQ(vecmath::StandardVectorMath::GetByIndex<3>(lhs), vecmath::SSE2VectorMath::GetByIndex<3>(rhs));
 }
 
-void EXPECT_EQ_SAMPLES(const SSE2Sample & lhs, const StdSample & rhs) {
+void EXPECT_EQ_SAMPLES(const SSE2FloatVec & lhs, const StdFloatVec & rhs) {
   EXPECT_EQ(vecmath::SSE2VectorMath::GetByIndex<0>(lhs), vecmath::StandardVectorMath::GetByIndex<0>(rhs));
   EXPECT_EQ(vecmath::SSE2VectorMath::GetByIndex<1>(lhs), vecmath::StandardVectorMath::GetByIndex<1>(rhs));
   EXPECT_EQ(vecmath::SSE2VectorMath::GetByIndex<2>(lhs), vecmath::StandardVectorMath::GetByIndex<2>(rhs));

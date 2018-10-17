@@ -23,8 +23,8 @@
 
 TEST(Parity, FillOne) {
   const float random_scalar = kNormDistribution(kRandomGenerator);
-  const StdSample std_fill = StandardVectorMath::Fill(random_scalar);
-  const SSE2Sample sse2_fill = SSE2VectorMath::Fill(random_scalar);
+  const StdFloatVec std_fill = StandardVectorMath::Fill(random_scalar);
+  const SSE2FloatVec sse2_fill = SSE2VectorMath::Fill(random_scalar);
   EXPECT_EQ_SAMPLES(std_fill, sse2_fill);
 }
 
@@ -33,11 +33,11 @@ TEST(Parity, Fill) {
   const float random_scalar_1 = kNormDistribution(kRandomGenerator);
   const float random_scalar_2 = kNormDistribution(kRandomGenerator);
   const float random_scalar_3 = kNormDistribution(kRandomGenerator);
-  const StdSample std_fill = StandardVectorMath::Fill(random_scalar_0,
+  const StdFloatVec std_fill = StandardVectorMath::Fill(random_scalar_0,
                                                       random_scalar_1,
                                                       random_scalar_2,
                                                       random_scalar_3);
-  const SSE2Sample sse2_fill = SSE2VectorMath::Fill(random_scalar_0,
+  const SSE2FloatVec sse2_fill = SSE2VectorMath::Fill(random_scalar_0,
                                                     random_scalar_1,
                                                     random_scalar_2,
                                                     random_scalar_3);
